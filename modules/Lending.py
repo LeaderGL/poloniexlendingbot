@@ -2,6 +2,7 @@
 from decimal import Decimal
 import sched
 import time
+import json
 import threading
 Config = None
 api = None
@@ -203,7 +204,10 @@ def cancel_all():
 
 
 def lend_all():
-    total_lent = Data.get_total_lent()[0]
+    get_total_lent = Data.get_total_lent()
+    total_lent = get_total_lent[0]
+    for each_cur in get_total_lent[-1]:
+        log.updateStatusValue(each_cur, "allLoans", json.dumps(get_total_lent[-1][each_cur]))
     lending_balances = api.return_available_account_balances("lending")['lending']
     if dry_run:  # just fake some numbers, if dryrun (testing)
         lending_balances = Data.get_on_order_balances()

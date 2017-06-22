@@ -17,7 +17,7 @@ sleeptimeinactive = 300
 
 #Minimum daily lend rate in percent (0.0031-5)
 #Setting to 0.0031 is about 1% a year, not worth it.
-mindailyrate = 0.005
+mindailyrate = 0.10
 
 #Maximum lending rate. 2% is good choice because it's default at margin trader interface.
 #5% is the maximum rate accepted by the exchange (0.003-5)
@@ -37,7 +37,7 @@ gaptop = 200
 #Daily lend rate threshold after which we offer lends for x days as opposed to 2.
 #If set to 0 all offers will be placed for a 2 day period (0.003-5)
 xdaythreshold = 0.2
-xdays = 60
+xdays = 2
 
 #Auto-transfer of funds from exchange to lending balance.
 #Enter ALL to transfer all coins, enter ACTIVE to transfer any coins you have in your lending account when the bot starts, these can be mixed.
@@ -74,14 +74,14 @@ hideCoins = True
 
 # Local Market Analysis: Choose which coins to record the market of in order to analyse them and compute a recommended lending rate.
 # Enter ALL to analyse all coins, enter ACTIVE to analyse the markets of any coins you have in your lending account when the bot starts, these can be mixed.
-#analyseCurrencies = STR,BTC,BTS,CLAM,DOGE,DASH,LTC,MAID,XMR,XRP,ETH,FCT
+analyseCurrencies = STR,BTC,BTS,CLAM,DOGE,DASH,LTC,MAID,XMR,XRP,ETH,FCT
 # Choose how long to keep market data. (In days) (1-365)
-#analyseMaxAge = 30
+analyseMaxAge = 30
 # Choose how often to record a market's rate. (In seconds.) (10-3600)
-#analyseUpdateInterval = 60
+analyseUpdateInterval = 60
 # Choose how aggressive to lend at based on a market's performance. (As a percentile of the market's rate.) (1-99)
 # Recommendations: Conservative = 50, Moderate = 75, Aggressive = 90, Very Aggressive = 99
-#lendingStyle = 75
+lendingStyle = 80
 
 #Syntax: ["COIN:mindailyrate:maxactiveamount:maxtolend:maxpercenttolend:maxtolendrate",...]
 #If maxactive amount is 0: stop lending this coin. in the future you'll be able to limit amount to be lent.
@@ -95,13 +95,13 @@ hideCoins = True
 #This option creates a json log file instead of console output which includes the most recent status.
 #Uncomment both jsonfile and jsonlogsize to enable.
 #Keep this in the default location if you want to use the webserver.
-#jsonfile = www/botlog.json
+jsonfile = www/botlog.json
 
 #Limits the amount of log lines to save.
-#jsonlogsize = 200
+jsonlogsize = 200
 
 #Enables a webserver for the www folder, in order to easily use the lendingbot.html with the .json log.
-#startWebServer = true
+startWebServer = true
 
 #Customize the IP and port that the webserver is hosted on. Defaults to 0.0.0.0:8000
 #0.0.0.0 will point to your default IP (Local IP on LAN as well as localhost), set to 127.0.0.1 if you want it to be only accessible by host computer.
@@ -114,12 +114,20 @@ hideCoins = True
 #outputCurrency = BTC
 
 #Plugins allow extending Bot functionality with extra features.
-#plugins = AccountStats
+plugins = AccountStats
 
 # Currencies can be configured here, or in the coinconfig. Coinconfig takes precedence.
 #[BTC]
 #minloansize = 0.01
-#mindailyrate = 0.18
+#mindailyrate = 0.10
+#maxactiveamount = 1
+#maxtolend = 0
+#maxpercenttolend = 0
+#maxtolendrate = 0
+
+#[ETH]
+#minloansize = 0.01
+#mindailyrate = 0.05
 #maxactiveamount = 1
 #maxtolend = 0
 #maxpercenttolend = 0
