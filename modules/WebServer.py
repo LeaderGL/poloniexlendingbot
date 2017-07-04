@@ -4,22 +4,36 @@ import threading
 server = None
 web_server_ip = "0.0.0.0"
 web_server_port = "8000"
+web_server_template = "www/default"
 
+
+def get_web_server_setting(config, option, default):
+    '''
+    Retrieve specific configuration from config file
+    '''
+    if config.has_option('BOT', option):
+        value = config.get('BOT', option)
+    else:
+        value = default
+    return value
 
 def initialize_web_server(config):
-    import threading
-    global web_server_ip, web_server_port
+    '''
+    Setup the web server, retrieving the configuration parameters
+    and starting the web server thread
+    '''
+    global web_server_ip, web_server_port, web_server_template
 
-    if config.has_option('BOT', 'customWebServerAddress'):
-        custom_web_server_address = (config.get('BOT', 'customWebServerAddress').split(':'))
-        if len(custom_web_server_address) == 1:
-            custom_web_server_address.append("8000")
-            print "WARNING: Please specify a port for the webserver in the form IP:PORT, default port 8000 used."
-    else:
-        custom_web_server_address = ['0.0.0.0', '8000']
+    # Check for custom web server address
+    web_server_ip = get_web_server_setting(config, 'customWebServerAddress', '0.0.0.0')
 
-    web_server_ip = custom_web_server_address[0]
-    web_server_port = custom_web_server_address[1]
+    # Check for custom web server port
+    web_server_port = get_web_server_setting(config, 'customWebServerPort', '8000')
+
+    # Check for custom web server template
+    web_server_template = get_web_server_setting(config, 'customWebServerTemplate', 'www/default')
+
+    print('Starting WebServer at {0} on port {1} with template {2}'.format(web_server_ip, web_server_port, web_server_template))
 
     thread = threading.Thread(target=start_web_server)
     thread.deamon = True
@@ -27,6 +41,9 @@ def initialize_web_server(config):
 
 
 def start_web_server():
+    '''
+    Start the web server
+    '''
     import SimpleHTTPServer
     import SocketServer
     import socket
@@ -43,7 +60,7 @@ def start_web_server():
 
             # serve from www folder under current working dir
             def translate_path(self, path):
-                return SimpleHTTPServer.SimpleHTTPRequestHandler.translate_path(self, '/www' + path)
+                return SimpleHTTPServer.SimpleHTTPRequestHandler.translate_path(self, '/' + web_server_template + path)
 
         global server
         SocketServer.TCPServer.allow_reuse_address = True
@@ -59,7 +76,7 @@ def start_web_server():
         serving_msg = "http://{0}:{1}/lendingbot.html".format(hosts[0], port)
         for host in hosts[1:]:
             serving_msg += ", http://{0}:{1}/lendingbot.html".format(host, port)
-        print 'Started WebServer, lendingbot status available at {0}'.format(serving_msg)
+        print('Started WebServer, lendingbot status available at {0}'.format(serving_msg))
         server.serve_forever()
     except Exception as ex:
         ex.message = ex.message if ex.message else str(ex)
@@ -67,8 +84,11 @@ def start_web_server():
 
 
 def stop_web_server():
+    '''
+    Stop the web server
+    '''
     try:
-        print "Stopping WebServer"
+        print("Stopping WebServer")
         threading.Thread(target = server.shutdown).start()
     except Exception as ex:
         ex.message = ex.message if ex.message else str(ex)

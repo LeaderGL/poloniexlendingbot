@@ -75,12 +75,14 @@ def timestamp():
 
 
 def stringify_total_lent(total_lent, rate_lent, loan_count, all_loans):
-    result = 'Lent: '
-    for key in sorted(total_lent):
-        average_lending_rate = Decimal(rate_lent[key] * 100 / total_lent[key])
-        result += '[%.8f %s @ %.4f%% w/ %d loans] ' % (Decimal(total_lent[key]), key, average_lending_rate, loan_count[key])
-        log.updateStatusValue(key, "lentSum", total_lent[key])
-        log.updateStatusValue(key, "averageLendingRate", average_lending_rate)
+    result = ''
+    if len(total_lent) > 0:
+        result += 'Lent: '
+        for key in sorted(total_lent):
+            average_lending_rate = Decimal(rate_lent[key] * 100 / total_lent[key])
+            result += '[%.8f %s @ %.4f%% w/ %d loans] ' % (Decimal(total_lent[key]), key, average_lending_rate, loan_count[key])
+            log.updateStatusValue(key, "lentSum", total_lent[key])
+            log.updateStatusValue(key, "averageLendingRate", average_lending_rate)
     return result
 
 
