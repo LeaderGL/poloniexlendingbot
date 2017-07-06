@@ -33,7 +33,8 @@ def initialize_web_server(config):
     # Check for custom web server template
     web_server_template = get_web_server_setting(config, 'customWebServerTemplate', 'www/default')
 
-    print('Starting WebServer at {0} on port {1} with template {2}'.format(web_server_ip, web_server_port, web_server_template))
+    print('Starting WebServer at {0} on port {1} with template {2}'
+        .format(web_server_ip, web_server_port, web_server_template))
 
     thread = threading.Thread(target=start_web_server)
     thread.deamon = True
