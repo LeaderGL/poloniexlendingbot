@@ -95,7 +95,7 @@ hideCoins = True
 #This option creates a json log file instead of console output which includes the most recent status.
 #Uncomment both jsonfile and jsonlogsize to enable.
 #Keep this in the default location if you want to use the webserver.
-#jsonfile = www/default/botlog.json
+#jsonfile = www/botlog.json
 
 #Limits the amount of log lines to save.
 #jsonlogsize = 200
@@ -110,8 +110,8 @@ hideCoins = True
 #customWebServerAddress = 0.0.0.0
 #customWebServerPort = 8000
 
-#Customize or select the desired template for the webserver. Default to 'www/default'.
-#customWebServerTemplate = www/default
+#Customize or select the desired template for the webserver. Default to 'www'.
+#customWebServerTemplate = www
 
 #The currency that the HTML Overview will present the earnings summary in.
 #Options are BTC, USDT, ETH or anything as long as it has a direct BTC market. The default is BTC.

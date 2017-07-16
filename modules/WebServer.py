@@ -4,7 +4,7 @@ import threading
 server = None
 web_server_ip = "0.0.0.0"
 web_server_port = "8000"
-web_server_template = "www/default"
+web_server_template = "www"
 
 
 def get_web_server_setting(config, option, default):
@@ -31,7 +31,7 @@ def initialize_web_server(config):
     web_server_port = get_web_server_setting(config, 'customWebServerPort', '8000')
 
     # Check for custom web server template
-    web_server_template = get_web_server_setting(config, 'customWebServerTemplate', 'www/default')
+    web_server_template = get_web_server_setting(config, 'customWebServerTemplate', 'www')
 
     print('Starting WebServer at {0} on port {1} with template {2}'
         .format(web_server_ip, web_server_port, web_server_template))
