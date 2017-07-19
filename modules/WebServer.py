@@ -7,16 +7,6 @@ web_server_port = "8000"
 web_server_template = "www"
 
 
-def get_web_server_setting(config, option, default):
-    '''
-    Retrieve specific configuration from config file
-    '''
-    if config.has_option('BOT', option):
-        value = config.get('BOT', option)
-    else:
-        value = default
-    return value
-
 def initialize_web_server(config):
     '''
     Setup the web server, retrieving the configuration parameters
@@ -25,13 +15,21 @@ def initialize_web_server(config):
     global web_server_ip, web_server_port, web_server_template
 
     # Check for custom web server address
-    web_server_ip = get_web_server_setting(config, 'customWebServerAddress', '0.0.0.0')
+    compositeWebServerAddress = config.get('BOT', 'customWebServerAddress', '0.0.0.0').split(":")
 
-    # Check for custom web server port
-    web_server_port = get_web_server_setting(config, 'customWebServerPort', '8000')
+    # associate web server ip address
+    web_server_ip = compositeWebServerAddress[0]
+
+    # check for IP:PORT legacy format
+    if (len(compositeWebServerAddress) > 1):
+        # associate web server port
+        web_server_port = compositeWebServerAddress[1]
+    else:
+        # Check for custom web server port
+        web_server_port = config.get('BOT', 'customWebServerPort', '8000')
 
     # Check for custom web server template
-    web_server_template = get_web_server_setting(config, 'customWebServerTemplate', 'www')
+    web_server_template = config.get('BOT', 'customWebServerTemplate', 'www')
 
     print('Starting WebServer at {0} on port {1} with template {2}'
         .format(web_server_ip, web_server_port, web_server_template))
